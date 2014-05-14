@@ -1,0 +1,24 @@
+.popup-tool .popup-trigger {
+    width:100%;
+    color: #ce3033;
+}
+#popup-dialog-panel {
+    min-width:450px;
+    max-width:800px;
+}
+#popup-dialog-panel .yui3-widget-hd {
+    background:none;
+    background-color: #264E87;
+}
+#popup-dialog-panel .yui3-widget-bd {
+    line-height:1.5;
+}
+#popup-dialog-panel .yui3-widget-ft {
+    background:none;
+}
+#popup-dialog-panel .yui3-panel-content {
+    border: 1px solid #ddd;
+}
+.popup-tool .popup-content {
+    display:none;
+}

@@ -22,7 +22,7 @@ YUI.add('moodle-filter_popup-popup', function(Y) {
                     id : 'popup-dialog-panel',
                     headerContent : title,
                     bodyContent: content,
-                    zIndex     : 5,
+                    zIndex     : 1500,
                     centered   : true,
                     modal      : true,
                     render     : true,

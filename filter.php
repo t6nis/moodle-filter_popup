@@ -22,11 +22,16 @@
  * @copyright  2014 Tõnis Tartes
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class filter_popup extends moodle_text_filter {
     
+    /**
+     * This only requires execution once per request.
+     * 
+     * @staticvar boolean $jsinitialised
+     * @param type $page
+     * @param type $context
+     */
     public function setup($page, $context) {
-        // This only requires execution once per request.
         static $jsinitialised = false;
         if (empty($jsinitialised)) {
             $page->requires->yui_module(
@@ -37,11 +42,18 @@ class filter_popup extends moodle_text_filter {
         }
     }
 
+    /**
+     * Filter text.
+     * 
+     * @param type $text
+     * @param array $options
+     * @return type
+     */
     function filter($text, array $options = array()) {
         global $CFG, $PAGE, $COURSE, $DB;
 
         if (!is_string($text) or empty($text)) {
-            // non string data can not be filtered anyway
+            // Non string data can not be filtered anyway.
             return $text;
         }
         
@@ -55,27 +67,35 @@ class filter_popup extends moodle_text_filter {
         $result = preg_replace_callback($search, 'filter_popup_impl', $text);
         
         if (is_null($result)) {
-            return $text; //error during regex processing (too many nested spans?)
+            return $text; // Error during regex processing (too many nested spans?).
         } else {
             return $result;
         }
     }
 }
 
+/**
+ * Change markup to actual popup.
+ * 
+ * @param type $text
+ * @return type
+ */
 function filter_popup_impl($text) {
     $title = '';
     $content = '';
-    
+
     if (preg_match('/\[poptitle\](.*?)\[\/poptitle\]/', $text[2], $element_title) > 0) {
         if (!empty($element_title[1])) {
             $title = $element_title[1];
             $content = str_replace('[poptitle]'.$title.'[/poptitle]', '', $text[2]);
-            //Replace <p> with <br><br>
-            $content = str_replace('<p>', '', $content);
-            $content = str_replace('</p>', '<br><br>', $content);
+            // Replace <p> with <br><br>.
+            //$content = str_replace('<p>', '', $content);
+            //$content = str_replace('</p>', '<br><br>', $content);
+            $content = str_replace('&nbsp;', '', $content);
+            $content = htmlspecialchars($content);
+
         }
     }
-    
     return '<span id="popup-'.$title.'" class="popup-tool"><a href="#" class="popup-trigger" onclick="return false;" title="'.$title.'">'.$title.'</a><span id="popup-content-'.$title.'" class="popup-content">'.$content.'</span></span>';
 }
 ?>
